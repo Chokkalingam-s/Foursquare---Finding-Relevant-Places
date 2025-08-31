@@ -1,0 +1,13 @@
+{
+  "events": [
+    {
+      "timestamp": "2025-08-31T22:44:16.757159",
+      "event_type": "location_analysis",
+      "data": {
+        "business_type": "food_truck",
+        "location": "13.194488, 80.182874",
+        "success": true
+      }
+    }
+  ]
+}
