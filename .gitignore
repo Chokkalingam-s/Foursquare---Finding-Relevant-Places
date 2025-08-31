@@ -1,0 +1,33 @@
+# Environment
+.env
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Application specific
+app/data/cache/*
+app/data/user_data/*
+!app/data/cache/.gitkeep
+!app/data/user_data/.gitkeep
+
+# Logs
+*.log
+logs/
+
+# Build
+build/
+dist/
+*.egg-info/
