@@ -1,0 +1,774 @@
+<!-- app/templates/analysis.html -->
+{% extends "base.html" %}
+
+{% block content %}
+<div class="analysis-page">
+    <div class="container">
+        <div class="page-header">
+            <h1><i class="fas fa-chart-bar"></i> Advanced Location Analysis</h1>
+            <p>Get detailed insights for your pop-up business location</p>
+        </div>
+
+        <div class="analysis-form-container">
+            <form id="detailed-analysis-form" class="detailed-form">
+                <div class="form-section">
+                    <h3>Location Details</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="analysis-location">
+                                <i class="fas fa-map-marker-alt"></i> Location
+                            </label>
+                            <input type="text" id="analysis-location" name="location" 
+                                   placeholder="Enter specific address, city, or coordinates (lat,lng)" required>
+                            <small>Examples: "123 Main St, New York, NY" or "40.7128,-74.0060"</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="analysis-business-type">
+                                <i class="fas fa-store"></i> Business Type
+                            </label>
+                            <select id="analysis-business-type" name="business_type" required>
+                                <option value="">Select Your Business Type</option>
+                                <option value="food_truck">🚚 Food Truck</option>
+                                <option value="retail">🛍️ Retail Pop-up</option>
+                                <option value="service">🔧 Service Business</option>
+                                <option value="entertainment">🎭 Entertainment</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3>Target Demographics</h3>
+                    <div class="demographics-grid">
+                        <label class="demo-option">
+                            <input type="checkbox" name="demographics" value="families">
+                            <span class="demo-card">
+                                <i class="fas fa-users"></i>
+                                <strong>Families</strong>
+                                <small>Parents with children</small>
+                            </span>
+                        </label>
+                        <label class="demo-option">
+                            <input type="checkbox" name="demographics" value="professionals">
+                            <span class="demo-card">
+                                <i class="fas fa-briefcase"></i>
+                                <strong>Professionals</strong>
+                                <small>Working adults 25-40</small>
+                            </span>
+                        </label>
+                        <label class="demo-option">
+                            <input type="checkbox" name="demographics" value="tourists">
+                            <span class="demo-card">
+                                <i class="fas fa-camera"></i>
+                                <strong>Tourists</strong>
+                                <small>Visitors & travelers</small>
+                            </span>
+                        </label>
+                        <label class="demo-option">
+                            <input type="checkbox" name="demographics" value="students">
+                            <span class="demo-card">
+                                <i class="fas fa-graduation-cap"></i>
+                                <strong>Students</strong>
+                                <small>College & university</small>
+                            </span>
+                        </label>
+                        <label class="demo-option">
+                            <input type="checkbox" name="demographics" value="seniors">
+                            <span class="demo-card">
+                                <i class="fas fa-heart"></i>
+                                <strong>Seniors</strong>
+                                <small>Adults 55+</small>
+                            </span>
+                        </label>
+                        <label class="demo-option">
+                            <input type="checkbox" name="demographics" value="locals">
+                            <span class="demo-card">
+                                <i class="fas fa-home"></i>
+                                <strong>Locals</strong>
+                                <small>Neighborhood residents</small>
+                            </span>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary btn-large">
+                        <i class="fas fa-search"></i> Run Advanced Analysis
+                    </button>
+                    <button type="button" class="btn btn-secondary" onclick="clearForm()">
+                        <i class="fas fa-redo"></i> Clear Form
+                    </button>
+                </div>
+            </form>
+        </div>
+        
+        <div id="detailed-results" class="detailed-results hidden">
+            <!-- Results will be populated here -->
+        </div>
+    </div>
+</div>
+
+<style>
+.analysis-page {
+    padding: 2rem;
+    min-height: calc(100vh - 200px);
+}
+
+.page-header {
+    text-align: center;
+    color: white;
+    margin-bottom: 3rem;
+}
+
+.page-header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.analysis-form-container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.detailed-form {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    padding: 2rem;
+    border-radius: 16px;
+    box-shadow: var(--shadow);
+}
+
+.form-section {
+    margin-bottom: 2rem;
+}
+
+.form-section h3 {
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.demographics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1rem;
+}
+
+.demo-option {
+    cursor: pointer;
+}
+
+.demo-option input[type="checkbox"] {
+    display: none;
+}
+
+.demo-card {
+    display: block;
+    padding: 1rem;
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    text-align: center;
+    transition: all 0.3s ease;
+    background: white;
+}
+
+.demo-card i {
+    font-size: 1.5rem;
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
+    display: block;
+}
+
+.demo-card strong {
+    display: block;
+    margin-bottom: 0.25rem;
+    color: var(--dark-color);
+}
+
+.demo-card small {
+    color: var(--text-color);
+    opacity: 0.7;
+}
+
+.demo-option input[type="checkbox"]:checked + .demo-card {
+    border-color: var(--primary-color);
+    background: #eff6ff;
+    transform: translateY(-2px);
+}
+
+.form-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 2rem;
+}
+
+.btn-large {
+    padding: 1rem 2rem;
+    font-size: 1.1rem;
+}
+
+.btn-sm {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+}
+
+@media (max-width: 768px) {
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+    
+    .demographics-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .form-actions {
+        flex-direction: column;
+    }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('detailed-analysis-form');
+    if (form) {
+        form.addEventListener('submit', handleDetailedAnalysis);
+    }
+});
+
+async function handleDetailedAnalysis(event) {
+    event.preventDefault();
+    
+    const formData = new FormData(event.target);
+    const location = formData.get('location');
+    const businessType = formData.get('business_type');
+    
+    // Get selected demographics
+    const demographicsCheckboxes = document.querySelectorAll('input[name="demographics"]:checked');
+    const targetDemographics = Array.from(demographicsCheckboxes).map(cb => cb.value);
+
+    if (!location || !businessType) {
+        alert('Please fill in all required fields');
+        return;
+    }
+
+    showAnalysisLoading();
+
+    try {
+        const response = await fetch('/api/analyze', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                location: location,
+                business_type: businessType,
+                target_demographics: targetDemographics
+            })
+        });
+
+        const result = await response.json();
+
+        if (response.ok && result.success) {
+            displayDetailedResults(result);
+        } else {
+            showAnalysisError(result.error || 'Analysis failed');
+        }
+    } catch (error) {
+        showAnalysisError('Network error: Please check your connection');
+    } finally {
+        hideAnalysisLoading();
+    }
+}
+
+function showAnalysisLoading() {
+    const resultsDiv = document.getElementById('detailed-results');
+    resultsDiv.innerHTML = `
+        <div class="loading-container">
+            <div class="loading-spinner"></div>
+            <h3>Analyzing Location...</h3>
+            <p>Gathering data from Foursquare API and running AI analysis</p>
+        </div>
+    `;
+    resultsDiv.classList.remove('hidden');
+}
+
+function hideAnalysisLoading() {
+    // Loading will be replaced by results
+}
+
+function displayDetailedResults(result) {
+    const resultsDiv = document.getElementById('detailed-results');
+    const recommendation = result.recommendation;
+    const insights = recommendation.insights;
+
+    const html = `
+        <div class="detailed-recommendation">
+            <div class="recommendation-header">
+                <h2><i class="fas fa-map-marked-alt"></i> Location Analysis Complete</h2>
+                <div class="confidence-badge ${getConfidenceClass(recommendation.confidence_score)}">
+                    ${Math.round(recommendation.confidence_score)}% Confidence Score
+                </div>
+            </div>
+
+            <div class="insights-overview">
+                <div class="insight-card">
+                    <i class="fas fa-walking"></i>
+                    <h4>Foot Traffic</h4>
+                    <div class="score-bar">
+                        <div class="score-fill" style="width: ${insights.foot_traffic_score}%"></div>
+                    </div>
+                    <span>${Math.round(insights.foot_traffic_score)}/100</span>
+                </div>
+                
+                <div class="insight-card">
+                    <i class="fas fa-chart-pie"></i>
+                    <h4>Market Opportunity</h4>
+                    <div class="score-bar">
+                        <div class="score-fill" style="width: ${insights.competition_density}%"></div>
+                    </div>
+                    <span>${Math.round(insights.competition_density)}/100</span>
+                </div>
+                
+                <div class="insight-card">
+                    <i class="fas fa-users"></i>
+                    <h4>Demographic Match</h4>
+                    <div class="score-bar">
+                        <div class="score-fill" style="width: ${insights.demographic_match}%"></div>
+                    </div>
+                    <span>${Math.round(insights.demographic_match)}/100</span>
+                </div>
+            </div>
+
+            <div class="analysis-sections">
+                <div class="analysis-section">
+                    <h3><i class="fas fa-lightbulb"></i> AI Insights</h3>
+                    <p class="reasoning">${recommendation.reasoning}</p>
+                </div>
+
+                <div class="analysis-section">
+                    <h3><i class="fas fa-dollar-sign"></i> Revenue Potential</h3>
+                    <div class="revenue-card">
+                        <strong>${recommendation.estimated_revenue_potential}</strong>
+                    </div>
+                </div>
+
+                <div class="analysis-section">
+                    <h3><i class="fas fa-clock"></i> Optimal Operating Hours</h3>
+                    <div class="hours-list">
+                        ${insights.optimal_hours.map(hour => `<span class="hour-badge">${hour}</span>`).join('')}
+                    </div>
+                </div>
+
+                ${insights.category_gaps.length > 0 ? `
+                <div class="analysis-section">
+                    <h3><i class="fas fa-gap"></i> Market Opportunities</h3>
+                    <div class="gaps-list">
+                        ${insights.category_gaps.map(gap => `<span class="gap-badge">${gap}</span>`).join('')}
+                    </div>
+                    <p>These categories are underserved in this area, presenting opportunities.</p>
+                </div>
+                ` : ''}
+
+                ${insights.nearby_attractions.length > 0 ? `
+                <div class="analysis-section">
+                    <h3><i class="fas fa-star"></i> Nearby Attractions</h3>
+                    <ul class="attractions-list">
+                        ${insights.nearby_attractions.map(attraction => `<li>${attraction}</li>`).join('')}
+                    </ul>
+                </div>
+                ` : ''}
+
+                ${insights.risk_factors.length > 0 ? `
+                <div class="analysis-section risk-section">
+                    <h3><i class="fas fa-exclamation-triangle"></i> Risk Factors</h3>
+                    <ul class="risk-list">
+                        ${insights.risk_factors.map(risk => `<li>${risk}</li>`).join('')}
+                    </ul>
+                </div>
+                ` : ''}
+
+                <div class="analysis-section">
+                    <h3><i class="fas fa-list-check"></i> Setup Requirements</h3>
+                    <ul class="requirements-list">
+                        ${recommendation.setup_requirements.map(req => `<li>${req}</li>`).join('')}
+                    </ul>
+                </div>
+
+                <div class="analysis-section">
+                    <h3><i class="fas fa-calendar"></i> Recommended Duration</h3>
+                    <div class="duration-card">
+                        <strong>${recommendation.recommended_duration}</strong>
+                    </div>
+                </div>
+            </div>
+
+            <div class="action-buttons">
+                <button class="btn btn-primary" onclick="saveDetailedAnalysis('${result.analysis_id}')">
+                    <i class="fas fa-save"></i> Save Analysis
+                </button>
+                <button class="btn btn-secondary" onclick="clearAnalysisForm()">
+                    <i class="fas fa-plus"></i> New Analysis
+                </button>
+                <button class="btn btn-secondary" onclick="downloadReport('${result.analysis_id}')">
+                    <i class="fas fa-download"></i> Download Report
+                </button>
+            </div>
+        </div>
+    `;
+
+    resultsDiv.innerHTML = html;
+    resultsDiv.classList.remove('hidden');
+    resultsDiv.scrollIntoView({ behavior: 'smooth' });
+}
+
+function getConfidenceClass(score) {
+    if (score >= 70) return 'confidence-high';
+    if (score >= 50) return 'confidence-medium';
+    return 'confidence-low';
+}
+
+function saveDetailedAnalysis(analysisId) {
+    const savedAnalyses = JSON.parse(localStorage.getItem('savedAnalyses') || '[]');
+    const location = document.getElementById('analysis-location').value;
+    
+    savedAnalyses.push({
+        id: analysisId,
+        timestamp: new Date().toISOString(),
+        location: location,
+        type: 'detailed'
+    });
+    
+    localStorage.setItem('savedAnalyses', JSON.stringify(savedAnalyses));
+    
+    alert('Analysis saved successfully!');
+}
+
+function clearAnalysisForm() {
+    document.getElementById('detailed-analysis-form').reset();
+    document.getElementById('detailed-results').classList.add('hidden');
+    document.getElementById('analysis-location').focus();
+}
+
+function clearForm() {
+    clearAnalysisForm();
+}
+
+function showAnalysisError(message) {
+    const resultsDiv = document.getElementById('detailed-results');
+    resultsDiv.innerHTML = `
+        <div class="error-container">
+            <i class="fas fa-exclamation-circle"></i>
+            <h3>Analysis Error</h3>
+            <p>${message}</p>
+            <button class="btn btn-primary" onclick="clearAnalysisForm()">Try Again</button>
+        </div>
+    `;
+    resultsDiv.classList.remove('hidden');
+}
+
+function downloadReport(analysisId) {
+    // Simple report download functionality
+    alert('Report download feature coming soon!');
+}
+</script>
+
+<style>
+.analysis-page {
+    padding: 2rem;
+    min-height: calc(100vh - 200px);
+}
+
+.page-header {
+    text-align: center;
+    color: white;
+    margin-bottom: 3rem;
+}
+
+.page-header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.analysis-form-container {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.detailed-form {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    padding: 2rem;
+    border-radius: 16px;
+    box-shadow: var(--shadow);
+}
+
+.form-section {
+    margin-bottom: 2rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.form-section:last-child {
+    border-bottom: none;
+}
+
+.form-section h3 {
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+}
+
+.demographics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 1rem;
+}
+
+.demo-option {
+    cursor: pointer;
+}
+
+.demo-option input[type="checkbox"] {
+    display: none;
+}
+
+.demo-card {
+    display: block;
+    padding: 1rem;
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    text-align: center;
+    transition: all 0.3s ease;
+    background: white;
+}
+
+.demo-card i {
+    font-size: 1.5rem;
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
+    display: block;
+}
+
+.demo-card strong {
+    display: block;
+    margin-bottom: 0.25rem;
+    color: var(--dark-color);
+}
+
+.demo-card small {
+    color: var(--text-color);
+    opacity: 0.7;
+}
+
+.demo-option input[type="checkbox"]:checked + .demo-card {
+    border-color: var(--primary-color);
+    background: #eff6ff;
+    transform: translateY(-2px);
+}
+
+.detailed-results {
+    margin-top: 3rem;
+    background: white;
+    border-radius: 16px;
+    padding: 2rem;
+    box-shadow: var(--shadow);
+}
+
+.recommendation-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--border-color);
+}
+
+.confidence-badge {
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-weight: 600;
+    color: white;
+}
+
+.insights-overview {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-bottom: 3rem;
+}
+
+.insight-card {
+    background: var(--light-color);
+    padding: 1.5rem;
+    border-radius: 12px;
+    text-align: center;
+    border: 1px solid var(--border-color);
+}
+
+.insight-card i {
+    font-size: 2rem;
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
+}
+
+.insight-card h4 {
+    margin-bottom: 1rem;
+    color: var(--dark-color);
+}
+
+.score-bar {
+    width: 100%;
+    height: 10px;
+    background: var(--border-color);
+    border-radius: 5px;
+    overflow: hidden;
+    margin: 0.5rem 0;
+}
+
+.score-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+    transition: width 0.5s ease;
+}
+
+.analysis-sections {
+    display: grid;
+    gap: 2rem;
+}
+
+.analysis-section {
+    padding: 1.5rem;
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+}
+
+.analysis-section h3 {
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+}
+
+.risk-section {
+    background: #fef2f2;
+    border-color: #fecaca;
+}
+
+.risk-section h3 {
+    color: var(--danger-color);
+}
+
+.revenue-card, .duration-card {
+    background: var(--success-color);
+    color: white;
+    padding: 1rem;
+    border-radius: 8px;
+    text-align: center;
+    font-size: 1.1rem;
+}
+
+.hours-list, .gaps-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 1rem 0;
+}
+
+.hour-badge, .gap-badge {
+    background: var(--primary-color);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.gap-badge {
+    background: var(--secondary-color);
+}
+
+.attractions-list, .risk-list, .requirements-list {
+    list-style: none;
+    margin: 1rem 0;
+}
+
+.attractions-list li, .requirements-list li {
+    padding: 0.5rem 0;
+    padding-left: 2rem;
+    position: relative;
+}
+
+.attractions-list li:before {
+    content: '⭐';
+    position: absolute;
+    left: 0;
+}
+
+.requirements-list li:before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: var(--success-color);
+    font-weight: bold;
+}
+
+.risk-list li {
+    padding: 0.5rem 0;
+    padding-left: 2rem;
+    position: relative;
+    color: var(--danger-color);
+}
+
+.risk-list li:before {
+    content: '⚠️';
+    position: absolute;
+    left: 0;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 2px solid var(--border-color);
+}
+
+.loading-container, .error-container {
+    text-align: center;
+    padding: 3rem;
+}
+
+.error-container {
+    color: var(--danger-color);
+}
+
+.error-container i {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+</style>
+{% endblock %}</label>
+                        <label><input type="checkbox" name="demographics" value="seniors"> Senior Citizens</label>
+                        <label><input type="checkbox" name="demographics" value="locals"> Local Residents</label>
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-analytics"></i> Run Detailed Analysis
+                </button>
+            </form>
+        </div>
+        
+        <div id="detailed-results" class="detailed-results hidden">
+            <!-- Results will be populated here -->
+        </div>
+    </div>
+</div>
+{% endblock %}
