@@ -147,9 +147,11 @@ Foursquare---Finding-Relevant-Places/
 
     
 ---
-
 ## Installation
 
+Follow these steps to set up the project:
+
+```bash
 # 1. Clone the repository
 git clone https://github.com/Chokkalingam-S/Foursquare-Finding-Relevant-Places.git
 cd Foursquare-Finding-Relevant-Places
@@ -181,6 +183,7 @@ cp .env.example .env    # On Windows: copy .env.example .env
 python run.py
 
 # The app will run at: http://localhost:5000
+
 
 
 ## Usage
