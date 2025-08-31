@@ -150,18 +150,38 @@ Foursquare---Finding-Relevant-Places/
 
 ## Installation
 
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/Chokkalingam-S/Foursquare-Finding-Relevant-Places.git
-   cd Foursquare-Finding-Relevant-Places
+# 1. Clone the repository
+git clone https://github.com/Chokkalingam-S/Foursquare-Finding-Relevant-Places.git
+cd Foursquare-Finding-Relevant-Places
 
-python -m venv venv
-source venv/bin/activate   # On Windows: venv\Scripts\activate
+# 2. Create a virtual environment
+# macOS / Linux
+python3 -m venv venv
+source venv/bin/activate
+
+# Windows (Command Prompt)
+# python -m venv venv
+# venv\Scripts\activate
+
+# Windows (PowerShell)
+# python -m venv venv
+# .\venv\Scripts\Activate.ps1
+
+# 3. Upgrade pip (optional but recommended)
+pip install --upgrade pip
+
+# 4. Install dependencies
 pip install -r requirements.txt
 
-cp .env.example .env
+# 5. Configure environment variables
+cp .env.example .env    # On Windows: copy .env.example .env
+# Then edit .env and add your FOURSQUARE_API_KEY, FLASK_ENV, SECRET_KEY
 
+# 6. Run the application
 python run.py
+
+# The app will run at: http://localhost:5000
+
 
 ## Usage
 
