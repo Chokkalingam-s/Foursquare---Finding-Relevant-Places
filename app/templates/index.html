@@ -1,0 +1,91 @@
+<!-- app/templates/index.html -->
+{% extends "base.html" %}
+
+{% block content %}
+<div class="hero-section">
+    <div class="hero-content">
+        <h1>Find Your Perfect Pop-Up Location</h1>
+        <p>AI-powered location intelligence for food trucks, retail pop-ups, and temporary businesses</p>
+        
+        <div class="search-container">
+            <form id="location-form" class="location-form">
+                <div class="form-group">
+                    <label for="location">Location</label>
+                    <input type="text" id="location" name="location" 
+                           placeholder="Enter address, city, or coordinates (lat,lng)" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="business_type">Business Type</label>
+                    <select id="business_type" name="business_type" required>
+                        <option value="">Select Business Type</option>
+                        <option value="food_truck">Food Truck</option>
+                        <option value="retail">Retail Pop-up</option>
+                        <option value="service">Service Business</option>
+                        <option value="entertainment">Entertainment</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="demographics">Target Demographics (Optional)</label>
+                    <div class="checkbox-group">
+                        <label><input type="checkbox" name="demographics" value="families"> Families</label>
+                        <label><input type="checkbox" name="demographics" value="professionals"> Young Professionals</label>
+                        <label><input type="checkbox" name="demographics" value="tourists"> Tourists</label>
+                        <label><input type="checkbox" name="demographics" value="students"> Students</label>
+                    </div>
+                </div>
+                
+                <button type="submit" class="analyze-btn">
+                    <i class="fas fa-search"></i> Analyze Location
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="features-section">
+    <div class="container">
+        <h2>Why Choose Choks?</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <i class="fas fa-chart-line"></i>
+                <h3>Smart Analytics</h3>
+                <p>AI-powered analysis of foot traffic, competition, and market gaps</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-clock"></i>
+                <h3>Optimal Timing</h3>
+                <p>Discover the best hours and days to operate your pop-up business</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-users"></i>
+                <h3>Demographic Insights</h3>
+                <p>Understand your target audience and local customer preferences</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-shield-alt"></i>
+                <h3>Risk Assessment</h3>
+                <p>Identify potential challenges and mitigation strategies</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="loading-modal" class="modal hidden">
+    <div class="modal-content">
+        <div class="loading-spinner"></div>
+        <p>Analyzing location data...</p>
+    </div>
+</div>
+
+<div id="results-section" class="results-section hidden">
+    <div class="container">
+        <div id="results-content"></div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/analytics.js') }}"></script>
+{% endblock %}
