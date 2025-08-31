@@ -92,6 +92,32 @@ def health_check():
         'version': current_app.config['APP_VERSION']
     })
 
+@api.route('/analytics', methods=['POST'])
+def save_analytics():
+    """Save analytics event"""
+    try:
+        data = request.get_json()
+        
+        if not data:
+            return jsonify({'error': 'No data provided'}), 400
+        
+        event_type = data.get('event_type')
+        event_data = data.get('data', {})
+        
+        from app.utils.file_manager import FileManager
+        file_manager = FileManager()
+        
+        success = file_manager.save_analytics_data(event_type, event_data)
+        
+        if success:
+            return jsonify({'status': 'success'})
+        else:
+            return jsonify({'error': 'Failed to save analytics'}), 500
+        
+    except Exception as e:
+        current_app.logger.error(f"Analytics API error: {str(e)}")
+        return jsonify({'error': 'Internal server error'}), 500
+
 @api.route('/analysis/<analysis_id>', methods=['GET'])
 def get_analysis(analysis_id):
     """Get saved analysis by ID"""

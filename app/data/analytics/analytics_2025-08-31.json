@@ -8,6 +8,15 @@
         "location": "13.194488, 80.182874",
         "success": true
       }
+    },
+    {
+      "timestamp": "2025-08-31T22:54:07.728744",
+      "event_type": "page_view",
+      "data": {
+        "page": "/",
+        "timestamp": "2025-08-31T17:24:07.726Z",
+        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36 Edg/139.0.0.0"
+      }
     }
   ]
 }
