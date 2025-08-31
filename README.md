@@ -148,7 +148,7 @@ Foursquare---Finding-Relevant-Places/
     
 ---
 
-**## Installation
+## Installation
 
 Follow these steps to set up the project:
 
@@ -183,7 +183,8 @@ cp .env.example .env    # On Windows: copy .env.example .env
 # 6. Run the application
 python run.py
 
-# The app will run at: http://localhost:5000**
+# The app will run at: http://localhost:5000 
+```
 
 
 
